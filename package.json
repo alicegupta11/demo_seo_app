@@ -1,0 +1,25 @@
+{
+  "name": "demo-seo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "prebuild": "npm run seo:generate && npm run seo:og",
+    "build": "vite build",
+    "preview": "vite preview",
+    "seo:generate": "node scripts/generate-seo-files.mjs",
+    "seo:og": "node scripts/generate-og-image.mjs",
+    "seo:verify": "node scripts/verify-seo.mjs"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.1",
+    "sharp": "^0.35.4",
+    "vite": "^8.2.2"
+  }
+}
