@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--
+      Fallback metadata for the initial HTML response. Once React mounts, the
+      <Seo> component replaces the title/description/robots/canonical per route.
+    -->
+    <title>DemoApp — React demo with public and private routes</title>
+    <meta
+      name="description"
+      content="A small React and Vite demo app showing public pages alongside a private dashboard protected by a route guard."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0b1020" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="author" content="DemoApp" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/og-image.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "DemoApp",
+        "url": "https://demo-app.example.com/",
+        "description": "A small React and Vite demo app showing public pages alongside a private dashboard protected by a route guard.",
+        "inLanguage": "en-US"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

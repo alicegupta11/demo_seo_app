@@ -1,0 +1,24 @@
+{
+  "name": "DemoApp — React demo with public and private routes",
+  "short_name": "DemoApp",
+  "description": "A small React and Vite demo app showing public pages alongside a private dashboard protected by a route guard.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#0b1020",
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}
