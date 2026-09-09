@@ -4,7 +4,7 @@
  * syntax (`import.meta.env`) so plain Node can import it too.
  */
 
-export const DEFAULT_SITE_URL = 'https://demo-app.example.com'
+export const DEFAULT_SITE_URL = 'https://demo-seo-app-jet.vercel.app'
 
 export const SITE_NAME = 'DemoApp'
 export const SITE_TAGLINE = 'React demo with public and private routes'
