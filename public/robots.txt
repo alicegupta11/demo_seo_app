@@ -11,6 +11,7 @@ User-agent: ClaudeBot
 User-agent: Claude-Web
 User-agent: DuckAssistBot
 User-agent: GPTBot
+User-agent: Google-Extended
 User-agent: Meta-ExternalAgent
 User-agent: Meta-ExternalFetcher
 User-agent: MistralAI
@@ -25,8 +26,5 @@ User-agent: *
 Allow: /
 Disallow: /login
 Disallow: /dashboard
-
-# Keep crawlers out of build assets that carry no standalone value.
-Disallow: /assets/
 
 Sitemap: https://demo-seo-app-jet.vercel.app/sitemap.xml

@@ -71,7 +71,7 @@ They are also excluded from `sitemap.xml`, since a sitemap should only list cano
 
 Both files are written into `public/` by `npm run prebuild`, so they ship with every build:
 
-- `public/robots.txt` allows everything except the private paths and `/assets/`, and points at the sitemap
+- `public/robots.txt` allows everything except the private paths, and points at the sitemap. `/assets/` is left crawlable so Googlebot can fetch the JS/CSS the SPA needs.
 - `public/sitemap.xml` lists public URLs only, with `lastmod`, `changefreq`, and `priority`
 
 Regenerate them by hand with `npm run seo:generate`.
@@ -105,9 +105,11 @@ canonical: (none)
 
 A web app manifest, an SVG favicon, `theme-color`, `color-scheme`, and `lang="en"` on `<html>`.
 
-### One caveat about SPAs
+### Prerendered public routes
 
-This is a client-rendered app, so the metadata is injected by JavaScript after the bundle boots. Google executes JS and will see it, but many other crawlers and most social-preview scrapers only read the initial HTML, and they will fall back to the static tags in `index.html`. If organic search or link previews matter for a real deployment, prerender the public routes or move to SSR (React Router's framework mode, `vite-plugin-ssr`, or Next.js) so the tags arrive in the initial response.
+`npm run build` finishes with `scripts/prerender.mjs`, which server-renders each public route into its own HTML file (`dist/index.html` for `/`, `dist/about/index.html` for `/about`). Crawlers and social scrapers therefore get the correct title, description, canonical, Open Graph tags, JSON-LD, and page body in the first response, without waiting for JavaScript.
+
+The client still mounts with `createRoot` (not `hydrateRoot`) so auth/`localStorage` cannot cause hydration mismatches. Users get the SPA; crawlers get unique first-byte HTML. Private routes (`/login`, `/dashboard`) and unknown paths stay on the SPA fallback rewrite.
 
 Relatedly, `noindex` and `robots.txt` are instructions for well-behaved crawlers, not access control. The route guard here is client-side and the auth is mocked, so treat the private page as a UI demo. Real private data needs enforcement on the server.
 
@@ -123,6 +125,7 @@ public/
 scripts/
   generate-seo-files.mjs      writes robots.txt + sitemap.xml
   generate-og-image.mjs       writes og-image.png
+  prerender.mjs               writes unique HTML for each public route into dist/
   verify-seo.mjs              prints head tags for every route
 src/
   App.jsx                     route definitions
@@ -142,15 +145,16 @@ src/
 ## Scripts
 
 - `npm run dev` starts the dev server
-- `npm run build` regenerates the SEO files, then builds into `dist/`
+- `npm run build` regenerates the SEO files, builds into `dist/`, then prerenders public routes
 - `npm run preview` serves the production build locally
 - `npm run seo:generate` rewrites `robots.txt` and `sitemap.xml`
 - `npm run seo:og` rerenders `og-image.png`
+- `npm run seo:prerender` rewrites unique HTML for `/` and `/about` in `dist/` (also runs as `postbuild`)
 - `npm run seo:verify` prints the head tags rendered for each route
 
 ## Deploy checklist
 
 1. Set `VITE_SITE_URL` to the production origin before building. Canonical tags, `og:url`, and the sitemap all derive from it.
-2. Configure your host to rewrite unknown paths to `/index.html` (SPA fallback) so deep links work, while still serving `/robots.txt` and `/sitemap.xml` as real files.
+2. Configure your host to rewrite unknown paths to `/index.html` (SPA fallback) so deep links work, while still serving `/robots.txt`, `/sitemap.xml`, and prerendered public pages (`/about`) as real files. Vercel serves filesystem matches before rewrites.
 3. Return a real HTTP 404 status for missing pages where possible; the React 404 page is cosmetic.
-4. Submit `https://your-domain.com/sitemap.xml` in Google Search Console.
+4. Submit `https://your-domain.com/sitemap.xml` in Google Search Console, then request indexing for `/about`. `site:` results can lag days after the HTML actually differs.

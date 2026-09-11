@@ -61,9 +61,6 @@ User-agent: *
 Allow: /
 ${disallowLines}
 
-# Keep crawlers out of build assets that carry no standalone value.
-Disallow: /assets/
-
 Sitemap: ${siteUrl}/sitemap.xml
 `
 }
